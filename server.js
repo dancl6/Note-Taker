@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 
 const { notes } = require('./db/notes');
+const Note = require('./lib/Note.js');
 
 const PORT = process.env.PORT || 3004;
 const app = express();
@@ -32,17 +33,15 @@ app.post("/api/notes", (req, res) => {
   let length = notes.length;
   console.log(length);
   let newId = length;
-  newId = toString(newId);
-  // notes.push(req.body);
-  let newArray = notes;
-  console.log(newArray);
-  newArray.newArray.push("id:" + newId);
-  console.log(newArray);
+  newId = newId.toString();
+  let reqB = req.body;
+  console.log(reqB);
 
-  // newArray.push(newId);
-  // console.log(newArray);
 
-  // res("test");
+  notes.push({title: reqB.title, text: reqB.text, id: newId});
+  console.log(notes);
+
+ 
 })
 
 // app.get('/api/test', (req, res) => {
