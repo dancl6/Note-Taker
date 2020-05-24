@@ -24,22 +24,17 @@ app.get("/notes", (req, res) => {
 });
 
 // get route to server to get notes
-app.get("/api/notes", (req, res) => {
-  console.log(notes);
+app.get("/api/notes", (req, res) => {  
   res.json(notes);
 })
 
 // post route to server to save notes
 app.post("/api/notes", (req, res) => {
-  console.log(req.body);
   let length = notes.length;
-  console.log(length);
   let newId = length;
   newId = newId.toString();
-  let reqB = req.body;
-  console.log(reqB);
-  notes.push({title: reqB.title, text: reqB.text, id: newId});
-  console.log(notes);
+  let reqB = req.body; 
+  notes.push({title: reqB.title, text: reqB.text, id: newId});  
   // return notes;
   fs.writeFileSync(
     path.join(__dirname, "./db/notes.json"),
