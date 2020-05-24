@@ -2,14 +2,22 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 
-const { notes } = require('./db/notes');
-const Note = require('./lib/Note.js');
+var { notes } = require('./db/notes');
+// const Note = require('./lib/Note.js');
 
 const PORT = process.env.PORT || 3004;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+
+// const writeFile = function (notes) {
+   
+//   fs.writeFileSync(
+//     path.join(__dirname, "./db/notes"),
+//     JSON.stringify({ notes }, null, 2)
+//   );
+// }
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/index.html"));
@@ -40,9 +48,39 @@ app.post("/api/notes", (req, res) => {
 
   notes.push({title: reqB.title, text: reqB.text, id: newId});
   console.log(notes);
-
- 
+  // return notes;
+  fs.writeFileSync(
+    path.join(__dirname, "./db/notes.json"),
+    JSON.stringify({ notes }, null, 2)
+  );
+  res.json(notes);
 })
+
+app.delete("/api/notes/:id", (req, res) => {
+  console.log(req.params.id);
+  notes[req.params.id] = null;
+  delete notes[req.params.id];
+  var filtered = notes.filter(function(el){
+    return el !=  null;
+  })
+  // notes[req.params.id] == null;
+  console.log(filtered);
+  // console.log(notes[2].id);
+  for (let i = 0 ; i< filtered.length; i++) {
+    let j = i.toString()
+    filtered[i].id = j;
+  }
+  notes = filtered;
+  console.log(filtered);
+  // res.json(notes);
+  fs.writeFileSync(
+    path.join(__dirname, "./db/notes.json"),
+    JSON.stringify({ notes }, null, 2)
+  );
+  res.json(notes);
+})
+
+
 
 // app.get('/api/test', (req, res) => {
 

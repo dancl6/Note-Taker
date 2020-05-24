@@ -22,8 +22,10 @@ var saveNote = function(note) {
   return $.ajax({
     url: "/api/notes",
     data: note,
-    method: "POST"
+    method: "POST",
+   
   });
+ 
 };
 
 // BONUS A function for deleting a note from the db
@@ -59,9 +61,11 @@ var handleNoteSave = function() {
   };
 
   saveNote(newNote).then(function(data) {
-    getAndRenderNotes();
-    renderActiveNote();
-  });
+    getAndRenderNotes(data);
+    renderActiveNote(data);
+  // }).catch(function(error) {
+  //   console.log("Error writing note.")
+  })
 };
 
 // BONUS Delete the clicked note
@@ -77,9 +81,9 @@ var handleNoteDelete = function(event) {
     activeNote = {};
   }
 
-  deleteNote(note.id).then(function() {
-    getAndRenderNotes();
-    renderActiveNote();
+  deleteNote(note.id).then(function(data) {
+    getAndRenderNotes(data);
+    renderActiveNote(data);
   });
 };
 
@@ -130,6 +134,8 @@ var renderNoteList = function(notes) {
 // Gets notes from the db and renders them to the sidebar
 var getAndRenderNotes = function() {
   return getNotes().then(function(data) {
+    // console.log("get render notes: ");
+    // console.log(data);
     renderNoteList(data);
   });
 };

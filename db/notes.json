@@ -1,18 +1,9 @@
 {
   "notes": [
     {
-      "title": "Pick up dry clean",
-      "text": "On Thursday pick up dry clean for wedding",
-      "id": "0"      
-    },
-    {
-      "title": "Test 2",
-      "text": "Submit assignment Friday",
-      "id": "1"      
-    },
-    {
-      "title": "Test 3",
+      "title": "test",
       "text": "testing",
-      "id": "2"      
-    }  ]
+      "id": "0"
+    }
+  ]
 }
