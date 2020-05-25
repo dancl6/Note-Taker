@@ -4,7 +4,7 @@ const path = require('path');
 const express = require('express');
 
 // make avialalbe notes.json database
-var { notes } = require('./db/notes');
+var { db } = require('./db/db');
 
 // make available express options
 const PORT = process.env.PORT || 3004;
@@ -25,32 +25,32 @@ app.get("/notes", (req, res) => {
 
 // get route to server to get notes
 app.get("/api/notes", (req, res) => {  
-  res.json(notes);
+  res.json(db);
 })
 
 // post route to server to save notes
 app.post("/api/notes", (req, res) => {
-  let length = notes.length;
+  let length = db.length;
   let newId = length;
   newId = newId.toString();
   let reqB = req.body; 
-  notes.push({title: reqB.title, text: reqB.text, id: newId});  
+  db.push({title: reqB.title, text: reqB.text, id: newId});  
   // return notes;
   fs.writeFileSync(
-    path.join(__dirname, "./db/notes.json"),
-    JSON.stringify({ notes }, null, 2)
+    path.join(__dirname, "./db/db.json"),
+    JSON.stringify({ db }, null, 2)
   );
-  res.json(notes);
+  res.json(db);
 })
 
 // delete route to server to delete notes
 app.delete("/api/notes/:id", (req, res) => {
   console.log(req.params.id);
-  notes[req.params.id] = null;
+  db[req.params.id] = null;
   // delete key from notes.json
-  delete notes[req.params.id];
+  delete db[req.params.id];
   // filter out empty keys from notes.json
-  var filtered = notes.filter(function(el){
+  var filtered = db.filter(function(el){
     return el !=  null;
   })  
   console.log(filtered);  
@@ -59,14 +59,14 @@ app.delete("/api/notes/:id", (req, res) => {
     let j = i.toString()
     filtered[i].id = j;
   }
-  notes = filtered;
+  db = filtered;
   console.log(filtered);
   // write out new notes.json
   fs.writeFileSync(
-    path.join(__dirname, "./db/notes.json"),
-    JSON.stringify({ notes }, null, 2)
+    path.join(__dirname, "./db/db.json"),
+    JSON.stringify({ db }, null, 2)
   );
-  res.json(notes);
+  res.json(db);
 })
 
 
